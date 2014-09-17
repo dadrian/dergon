@@ -1,4 +1,18 @@
+if ( !String.prototype.contains ) {
+    String.prototype.contains = function() {
+        return String.prototype.indexOf.apply( this, arguments ) !== -1;
+    };
+}
+
+if ( !String.prototype.startsWith ) {
+    String.prototype.startsWith = function() {
+        return String.prototype.indexOf.apply( this, arguments ) === 0;
+    };
+}
+
 var translate = function(word) {
+
+  var backup = word;
 
   word = word.toUpperCase();
 
@@ -7,13 +21,22 @@ var translate = function(word) {
     return word;
   }
 
-  if (word[0] == '@') {
+  if (word[0] == '@' || word[0] == '#') {
+    return backup;
+  }
+
+  if (word.startsWith('HTTP')) {
+    return backup;
+  }
+
+  if (word.contains(':')) {
     return word;
   }
 
   // Handle specific words
   switch (word) {
     case 'DRAGON':     return 'DERGON';
+    case 'AGE':        return 'AGE';
     case 'AWESOME':    return 'ERSUM';
     case 'BANANA':     return 'BERNERNER';
     case 'BAYOU':      return 'BERU';
@@ -27,6 +50,8 @@ var translate = function(word) {
     case 'WE\'RE':     return 'WER';
     case 'YOU':        return 'U';
     case 'YOU\'RE':    return 'YER';
+    case 'WHO':        return 'WHO';
+    case 'WHOM':       return 'WHERM';
   }
 
 

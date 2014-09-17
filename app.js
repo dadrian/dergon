@@ -2,10 +2,10 @@ var Twit = require('twit');
 var translate = require('./translate');
 
 var config = {
-    consumer_key: 'SCl6mCEqJ8AsCIhX1G0qUtofy',
-    consumer_secret: '1welgkV6KG3GZlwMc2A8bzOHIOG0slbO8DTJs6ev1a1DdjIZat',
-    access_token: '2523419953-FwrzMHmqwR26gtOVXDUfCfid6Hd5HhCKrIvZ3BC',
-    access_token_secret: 'jjlUCsXuIiqcM5H4Teawh4tYBdOtsg89Qv4UbKu34ybaP'
+    consumer_key: 'PDGWMvOfvGD3hKLoFr3vGk5na',
+    consumer_secret: '4A2FCcXZNpdMD32oJLsrxQXjaO1jrV8pwCoPUVYhSXWTcDEfkM',
+    access_token: '2523419953-WbKmHAnLdzq1SK0d0LMQJKhyEFT89CEyVnGEIe8',
+    access_token_secret: 'gBcZBIEQ0syM6nNstnoNvcGo784jXKfCi8wk2OFDjFpLh'
 };
 
 var Bot = require('./bot');
@@ -17,6 +17,10 @@ var TEST_ID = 20807505;
 
 var stream = T.stream('statuses/filter', { follow: [ DA_ID ] });
 stream.on('tweet', function(tweet) {
+	//console.log(tweet);
+	if (tweet.user.id != DA_ID) {
+		return;
+	}
 	console.log(tweet);
 	// Skip @replies
 	var text = tweet.text;
@@ -29,6 +33,9 @@ stream.on('tweet', function(tweet) {
 
 	var words = text.split(/\s+/);
 	var translated = words.map(translate).join(' ');
+        if (translated.length > 140) {
+            translated = translated.substring(0, 140);
+        } 
 	bot.tweet(translated, function(err, data, response) {
 		if (err) {
 			console.log(err);
